@@ -2,19 +2,26 @@ import praw
 import matplotlib.pyplot as plt
 import credentials
 
+
+# Reddit autentimine
 reddit = praw.Reddit(client_id= credentials.client_id, \
                      client_secret= credentials.client_secret , \
                      user_agent='RemoSpys by U/RemoSpys', \
                         )
 
+# Subredditi info
 subredditname = "Eesti"
 subreddit = reddit.subreddit(subredditname)
+
+# Top-postituste hankimine
 top_subbreddit = subreddit.top()
 count = 0
 max = 120
 print('Õnnestunud')
 words = []
 wordCount = {}
+
+# Sõnade loenduriks ühised sõnad, mida välja jätta
 commonWords = {'jah', 'aga', 'ei', 'ok', 'kas', 'mina', 'millal', 'kuidas', 'ja', 'of', 'the', 'for', 'ma', 'see',
                 'on', 'tal', 'nad', 'aga', 'olema', 'voib', 'sina', 'et', 'ei', 'sa', 'teie', 'ei', 'saaks', 'minu', 'nende', 
                 'neile', 'nad', 'koos', 'aga', 'umbes', 'kuidas', 'seal', 'sina', 'ja', 'seal', 'Teie', 'alates', 'saada', 'lihtsalt',
@@ -42,6 +49,7 @@ commonWords = {'jah', 'aga', 'ei', 'ok', 'kas', 'mina', 'millal', 'kuidas', 'ja'
                 'others', 'in', 'He/she', 'what', 'I', 'that', 'that', 'this', 'thought', 'that', 'so', 'much', 'Estonian', 'like', 'This',
                 'still', 'this', 'who', 'I', 'own', 'or', 'very', 'he/she/it', 'some', 'If', 'already', 'there', 'all'}
 
+# Liigu üle top-postituste ja nende kommentaaride
 for submission in subreddit.top(limit=10):
     submission.comments.replace_more(limit=0)
     for top_level_comment in submission.comments:
@@ -49,6 +57,8 @@ for submission in subreddit.top(limit=10):
         if(count == max):
             break
         word = ""
+
+      # Teksti jagamine sõnadeks
         for letter in top_level_comment.body:
             if(letter == ' '):
                 if(word and not word[-1].isalnum()):
@@ -61,14 +71,17 @@ for submission in subreddit.top(limit=10):
     if(count == max):
             break
 
+# Sõnade esinemiste loendamine
 for word in words:
     if word in wordCount:
         wordCount[word] += 1
     else:
         wordCount[word] = 1
 
+# Sõnade järjestamine esinemiste arvu järgi
 sortedList = sorted(wordCount, key = wordCount.get, reverse = True)
 
+# Top 10 sõna ja esinemiste arvu saamine
 keyWords = []
 keyCount = []
 amount = 0
@@ -80,6 +93,7 @@ for entry in sortedList:
     if (amount == 10):
         break
 
+# Andmete visualiseerimine pie chart'ina
 labels = keyWords
 sizes = keyCount
 
@@ -88,4 +102,5 @@ plt.pie(sizes, labels=labels, autopct='%1.1f%%',
         shadow=True, startangle=90)
 plt.axis('equal')
 
+# Salvesta diagramm faili
 plt.savefig('diagramm.png')
