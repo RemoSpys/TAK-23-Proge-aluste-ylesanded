@@ -1,5 +1,7 @@
+# Loome listi "fruitlist" kolme viljaga
 fruitlist = ["apple", "pear", "cherry"]
 print(fruitlist[0])
+# Lisame listi ühe vilja ("pear")
 fruitlist.append("pear")
 print(fruitlist)
 print(fruitlist[-1])
