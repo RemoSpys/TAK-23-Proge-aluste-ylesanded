@@ -1,4 +1,4 @@
-# Määratle tulu sõnastik, mis sisaldab müügandmeid erinevate jookide kohta iga töötaja kohta.
+# Müügitulu andmed kohviku ja joogitüüpide kaupa, {} on andmestruktuur, mis võimaldab seostada võtmeid konkreetsete väärtustega.
 revenue = {
     "Johnver": {
         "Tea": 190,
@@ -32,7 +32,7 @@ revenue = {
     },
 }
 
-# Määratle kulude sõnastik, mis sisaldab erinevate jookide kuluanalüüsi igale töötajale.
+# Kulude andmed kohviku ja joogitüüpide kaupa
 expenses = {
     "Johnver": {
         "Tea": 120,
@@ -66,18 +66,18 @@ expenses = {
     },
 }
 
-# Itereeri iga töötaja üle tulusõnastikus.
+# Välimine tsükkel käib läbi igasugused kohvikud, "for key in revenue" käib kood läbi igasugused kohvikud, kus "key" vastab konkreetsele kohviku nimele (nagu "Johnver", "Vanston" jne).
 for key in revenue:
-    # Alusta muutujaga, et jälgida kogukasumit praegusele töötajale.
+    # Algatame iga kohviku jaoks kogukasumi nullist
     total_profit = 0
-    # Itereeri iga müüdud joogi üle praeguse töötaja poolt.
+    # Sisemine tsükkel käib läbi joogitüübid iga kohviku jaoks
     for drink in revenue[key]:
-        # Arvuta ja otsusta iga joogi kasum.
+        # Iga joogi kasum leitakse müügitulust miinus kulud
         profit = revenue[key][drink] - expenses[key][drink]
 
-        # Kui kasum on positiivne, siis liida see kogukasumile.
+        # Kui kasum on positiivne, siis lisatakse see kogukasumile
         if profit > 0:
             total_profit += profit
 
-    # Prindi välja töötaja nimi, tema kogukasum, kuid ümarda see 6.2 protsendini.
+    # Prinditakse välja kohviku nimi ja ümardatud kogukasum (6.2% kasumimarginaaliga)
     print(key, round(total_profit * 0.062))
