@@ -1,0 +1,1 @@
+Python'i ülesanded
